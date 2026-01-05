@@ -417,7 +417,7 @@ public class BuildingMenuMisc {
             strs.add(ind.getUnavailableReason());
         }
         if (!AdditionalReqManager.getInstance().doesMetReq(id, market)) {
-            strs.add(AdditionalReqManager.getInstance().getAdditionalReasons(id, market));
+            strs.add(AdditionalReqManager.getInstance().getReq(id).getReason(market, id));
         }
         return strs;
 

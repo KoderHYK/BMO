@@ -19,6 +19,7 @@ import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.Pair;
 import com.fs.starfarer.campaign.ui.marketinfo.CommodityPanel;
+import com.fs.starfarer.ui.impl.R;
 import kaysaar.bmo.buildingmenu.MarketDialog;
 
 import java.awt.*;

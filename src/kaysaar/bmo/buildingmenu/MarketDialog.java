@@ -296,6 +296,39 @@ public class MarketDialog extends BasePopUpDialog {
         ReflectionUtilis.invokeMethod("recreateWithEconUpdate",overview);
     }
 
+    @Override
+    public void processInput(List<InputEventAPI> events) {
+        for (InputEventAPI event : events) {
+            if(frames>=limit&&reachedMaxHeight){
+                if(event.isMouseDownEvent()&&!isDialog){
+                    TrapezoidButtonDetector detector = new TrapezoidButtonDetector();
+                    float xLeft = panelToInfluence.getPosition().getX();
+                    float xRight = panelToInfluence.getPosition().getX()+panelToInfluence.getPosition().getWidth();
+                    float yBot = panelToInfluence.getPosition().getY();
+                    float yTop = panelToInfluence.getPosition().getY()+panelToInfluence.getPosition().getHeight();
+                    boolean hovers = detector.determineIfHoversOverButton(xLeft,yTop,xRight,yTop,xLeft,yBot,xRight,yBot,Global.getSettings().getMouseX(),Global.getSettings().getMouseY());
+                    if(!hovers){
+                        ProductionUtil.getCoreUI().removeComponent(panelToInfluence);
+                        event.consume();
+                        onExit();
+                    }
+                }
+                if(!event.isConsumed()&&!dissableExit){
+                    if(event.getEventValue()== Keyboard.KEY_ESCAPE){
+                        ProductionUtil.getCoreUI().removeComponent(panelToInfluence);
+                        event.consume();
+                        onExit();
+                        break;
+                    }
+                }
+            }
+            event.consume();
+        }
+
+
+
+    }
+
 
     @Override
     public void onExit() {

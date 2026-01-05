@@ -4,12 +4,11 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
 public class AdditionalReqManager {
     //Note : this is used by aotd this is why there is only one instance of baseAdditionalReq use it ONLY for vanilla industries
     public static AdditionalReqManager instance;
-    public LinkedHashSet<BaseAdditionalReq>reqLinkedHashMap = new LinkedHashSet<>();
+    public LinkedHashMap<String,BaseAdditionalReq>reqLinkedHashMap = new LinkedHashMap<>();
     public static AdditionalReqManager getInstance() {
         if (instance == null) {
             instance = new AdditionalReqManager();
@@ -17,34 +16,21 @@ public class AdditionalReqManager {
         }
         return instance;
     }
-    public void  addReq(BaseAdditionalReq req){
-        reqLinkedHashMap.add(req);
+    public void  addReq(String id,BaseAdditionalReq req){
+        reqLinkedHashMap.put(id,req);
     }
 
-    public LinkedHashSet<BaseAdditionalReq> getReqLinkedHashMap() {
+    public LinkedHashMap<String, BaseAdditionalReq> getReqLinkedHashMap() {
         return reqLinkedHashMap;
     }
-    public boolean doesMetReq(String industryId, MarketAPI market) {
-        for (BaseAdditionalReq value : reqLinkedHashMap) {
-            if(value.getIndustriesAffected().contains(industryId)){
-                if(!value.metCriteria(market,industryId))return false;
-            }
-        }
-        return true;
+    public BaseAdditionalReq getReq(String id) {
+        return reqLinkedHashMap.get(id);
     }
-    public String getAdditionalReasons(String industryId, MarketAPI market) {
-        StringBuilder builder = new StringBuilder();
-        boolean appended = false;
-        for (BaseAdditionalReq value : reqLinkedHashMap) {
-            if(value.getIndustriesAffected().contains(industryId)){
-                if(!value.metCriteria(market,industryId))continue;
-                if(appended){
-                    builder.append("\n");
-                }
-                builder.append(value.getReason(market,industryId));
-                appended = true;
-            }
+    public boolean doesMetReq(String id, MarketAPI market) {
+        if(!reqLinkedHashMap.containsKey(id)){
+            return true;
         }
-        return builder.toString();
+        BaseAdditionalReq req = reqLinkedHashMap.get(id);
+        return req.metCriteria(market,id);
     }
 }

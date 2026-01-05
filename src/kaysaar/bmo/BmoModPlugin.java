@@ -2,14 +2,12 @@ package kaysaar.bmo;
 
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.loading.IndustrySpecAPI;
 import kaysaar.bmo.buildingmenu.BuildingUITracker;
 import kaysaar.bmo.buildingmenu.industrytags.IndustryTagManager;
 import kaysaar.bmo.buildingmenu.tooltipinjector.ModIndustryTooltipInjector;
 import kaysaar.bmo.buildingmenu.upgradepaths.CustomUpgradePath;
 import kaysaar.bmo.buildingmenu.upgradepaths.UpgradePathManager;
 import kaysaar.bmo.buildingmenu.upgradequeue.UpdateQueueMainManager;
-import kaysaar.bmo.listeners.BMOUpgradeButtonsListener;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.LinkedHashMap;
@@ -31,12 +29,13 @@ public class BmoModPlugin extends BaseModPlugin {
     public void onGameLoad(boolean newGame) {
         Global.getSector().addTransientScript(new BuildingUITracker());
         Global.getSector().addTransientScript(new UpdateQueueMainManager());
-        Global.getSector().getListenerManager().addListener(new BMOUpgradeButtonsListener(),true);
         Global.getSector().getListenerManager().addListener(new ModIndustryTooltipInjector(),true);
-        for (IndustrySpecAPI allIndustrySpec : Global.getSettings().getAllIndustrySpecs()) {
-            allIndustrySpec.setUpgrade(null);
-        }
         UpgradePathManager.getInstance().rePopulate();
+        //Note : Should be done from AoTD side, but i dont wanna make sudden update
+        if(Global.getSettings().getModManager().isModEnabled("aotd_vok")){
+
+
+        }
     }
 
     // You can add more methods from ModPlugin here. Press Control-O in IntelliJ to see options.
